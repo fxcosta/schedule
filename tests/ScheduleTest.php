@@ -618,8 +618,22 @@ class ScheduleTest extends TestCase
             '2019-06-25' => ['08:30-11:00']
         ]);
 
-        $this->assertTrue($this->user->isAvailableOn('2019-06-25', false));
-        $this->assertTrue($this->user->isAvailableOnAt('2019-06-25', '09:00', false));
-        $this->assertFalse($this->user->isAvailableOnAt('2019-06-25', '11:02', false));
+        $this->assertTrue($this->user->isAvailableOn('2019-06-25'));
+        $this->assertTrue($this->user->isAvailableOnAt('2019-06-25', '09:00'));
+        $this->assertFalse($this->user->isAvailableOnAt('2019-06-25', '11:02'));
+    }
+
+    public function testAvailabilityOnlyStartDate()
+    {
+        $this->user->setSchedule([
+            'friday' => ['08:30-11:00']
+        ], '2019-08-01');
+
+        $this->assertFalse($this->user->isAvailableOn('2019-07-26'));
+        $this->assertFalse($this->user->isAvailableOnAt('2019-07-26', '09:00'));
+
+        $this->assertTrue($this->user->isAvailableOn('2019-08-02'));
+        $this->assertTrue($this->user->isAvailableOnAt('2019-08-02', '09:00'));
+        $this->assertFalse($this->user->isAvailableOnAt('2019-08-02', '11:02'));
     }
 }

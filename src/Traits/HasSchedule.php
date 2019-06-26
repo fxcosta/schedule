@@ -60,7 +60,7 @@ trait HasSchedule
      * @param array $scheduleArray The array with schedules.
      * @return array The schedule array.
      */
-    public function setSchedule(array $scheduleArray = [])
+    public function setSchedule(array $scheduleArray = [], string $startDate = null)
     {
         if ($this->hasSchedule()) {
             return $this->updateSchedule($scheduleArray);
@@ -154,10 +154,10 @@ trait HasSchedule
      * @param string|Carbon|DateTime $dateOrDay The datetime, date or the day.
      * @return bool Wether it is available on that day.
      */
-    public function isAvailableOn($dateOrDay, $parseDateToDay = true): bool
+    public function isAvailableOn($dateOrDay): bool
     {
         if (in_array($dateOrDay, Self::$availableDays)) {
-            return (bool)(count($this->getSchedule()[$dateOrDay]) > 0);
+            return (bool)(count($this->getSchedule()[$dateOrDay]['times']) > 0);
         }
 
         if ($dateOrDay instanceof $this->carbonInstance) {
@@ -169,10 +169,10 @@ trait HasSchedule
                 return false;
             }
 
-            return (bool)(count($this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]) > 0);
+            return (bool)(count($this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]['times']) > 0);
         }
 
-        if ($parseDateToDay && ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay))) {
+        if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
             if ($this->isExcludedOn($dateOrDay)) {
                 if (count($this->getExcludedTimeRangesOn($dateOrDay)) != 0) {
                     return true;
@@ -181,19 +181,11 @@ trait HasSchedule
                 return false;
             }
 
-            return (bool)(count($this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]) > 0);
-        }
-
-        if (!$parseDateToDay && $this->isValidYearMonthDay($dateOrDay)) {
-            if ($this->isExcludedOn($dateOrDay)) {
-                if (count($this->getExcludedTimeRangesOn($dateOrDay)) != 0) {
-                    return true;
-                }
-
-                return false;
+            if (isset($this->getSchedule()[$dateOrDay])) {
+                return (bool)(count($this->getSchedule()[$dateOrDay]['times']) > 0);
             }
 
-            return (bool)(count($this->getSchedule()[$dateOrDay]) > 0);
+            return (bool)(count($this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]['times']) > 0);
         }
 
         return false;
@@ -217,37 +209,32 @@ trait HasSchedule
      * @param string The time.
      * @return bool Wether it is available on that day, at a certain time.
      */
-    public function isAvailableOnAt(
-        $dateOrDay,
-        $time,
-        $parseDateToDay = true
-    ): bool {
+    public function isAvailableOnAt($dateOrDay, $time): bool
+    {
         $timeRanges = null;
 
         if (in_array($dateOrDay, Self::$availableDays)) {
-            $timeRanges = $this->getSchedule()[$dateOrDay];
+            $timeRanges = $this->getSchedule()[$dateOrDay]['times'];
         }
 
         if ($dateOrDay instanceof $this->carbonInstance) {
-            $timeRanges = $this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))];
+            $timeRanges = $this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]['times'];
 
             if ($this->isExcludedOn($dateOrDay->toDateString())) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay->toDateString());
             }
         }
 
-        if ($parseDateToDay && ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay))) {
+        if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
             $dateWeekDay = strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'));
 
-            $timeRanges = $this->getSchedule()[$dateWeekDay];
-
-            if ($this->isExcludedOn($dateOrDay)) {
-                $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay);
+            if (isset($this->getSchedule()[$dateWeekDay]['times'])) {
+                $timeRanges = $this->getSchedule()[$dateWeekDay]['times'];
             }
-        }
 
-        if (!$parseDateToDay && $this->isValidYearMonthDay($dateOrDay)) {
-            $timeRanges = $this->getSchedule()[$dateOrDay];
+            if (isset($this->getSchedule()[$dateOrDay])) {
+                $timeRanges = array_merge($timeRanges, $this->getSchedule()[$dateOrDay]['times']);
+            }
 
             if ($this->isExcludedOn($dateOrDay)) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay);
@@ -293,11 +280,11 @@ trait HasSchedule
         $timeRanges = null;
 
         if (in_array($dateOrDay, Self::$availableDays)) {
-            $timeRanges = $this->getSchedule()[$dateOrDay];
+            $timeRanges = $this->getSchedule()[$dateOrDay]['times'];
         }
 
         if ($dateOrDay instanceof $this->carbonInstance) {
-            $timeRanges = $this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))];
+            $timeRanges = $this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]['times'];
 
             if ($this->isExcludedOn($dateOrDay->toDateString())) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay->toDateString());
@@ -305,7 +292,7 @@ trait HasSchedule
         }
 
         if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
-            $timeRanges = $this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))];
+            $timeRanges = $this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]['times'];
 
             if ($this->isExcludedOn($dateOrDay)) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay);
@@ -337,11 +324,11 @@ trait HasSchedule
         $timeRanges = null;
 
         if (in_array($dateOrDay, Self::$availableDays)) {
-            $timeRanges = $this->getSchedule()[$dateOrDay];
+            $timeRanges = $this->getSchedule()[$dateOrDay]['times'];
         }
 
         if ($dateOrDay instanceof $this->carbonInstance) {
-            $timeRanges = $this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))];
+            $timeRanges = $this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]['times'];
 
             if ($this->isExcludedOn($dateOrDay->toDateString())) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay->toDateString());
@@ -349,7 +336,7 @@ trait HasSchedule
         }
 
         if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
-            $timeRanges = $this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))];
+            $timeRanges = $this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]['times'];
 
             if ($this->isExcludedOn($dateOrDay)) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay);
@@ -436,12 +423,15 @@ trait HasSchedule
     /**
      * Normalize the schedule array.
      */
-    protected function normalizeScheduleArray(array $scheduleArray): array
+    protected function normalizeScheduleArray(array $scheduleArray, string $startDate = null): array
     {
         $finalScheduleArray = [];
 
         foreach (Self::$availableDays as $availableDay) {
-            $finalScheduleArray[$availableDay] = [];
+            $finalScheduleArray[$availableDay] = [
+                'times' => [],
+                'start_date' => null
+            ];
         }
 
         foreach ($scheduleArray as $day => $timeArray) {
@@ -460,7 +450,8 @@ trait HasSchedule
                     continue;
                 }
 
-                $finalScheduleArray[$day][] = $time;
+                $finalScheduleArray[$day]['times'][] = $time;
+                $finalScheduleArray[$day]['start_date'] = $startDate;
             }
         }
 
