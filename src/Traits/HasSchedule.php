@@ -154,7 +154,7 @@ trait HasSchedule
      * @param string|Carbon|DateTime $dateOrDay The datetime, date or the day.
      * @return bool Wether it is available on that day.
      */
-    public function isAvailableOn($dateOrDay): bool
+    public function isAvailableOn($dateOrDay, $parseDateToDay = true): bool
     {
         if (in_array($dateOrDay, Self::$availableDays)) {
             return (bool)(count($this->getSchedule()[$dateOrDay]) > 0);
@@ -172,7 +172,7 @@ trait HasSchedule
             return (bool)(count($this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]) > 0);
         }
 
-        if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
+        if ($parseDateToDay && ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay))) {
             if ($this->isExcludedOn($dateOrDay)) {
                 if (count($this->getExcludedTimeRangesOn($dateOrDay)) != 0) {
                     return true;
@@ -182,6 +182,18 @@ trait HasSchedule
             }
 
             return (bool)(count($this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]) > 0);
+        }
+
+        if (!$parseDateToDay && $this->isValidYearMonthDay($dateOrDay)) {
+            if ($this->isExcludedOn($dateOrDay)) {
+                if (count($this->getExcludedTimeRangesOn($dateOrDay)) != 0) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return (bool)(count($this->getSchedule()[$dateOrDay]) > 0);
         }
 
         return false;
@@ -205,8 +217,11 @@ trait HasSchedule
      * @param string The time.
      * @return bool Wether it is available on that day, at a certain time.
      */
-    public function isAvailableOnAt($dateOrDay, $time): bool
-    {
+    public function isAvailableOnAt(
+        $dateOrDay,
+        $time,
+        $parseDateToDay = true
+    ): bool {
         $timeRanges = null;
 
         if (in_array($dateOrDay, Self::$availableDays)) {
@@ -221,8 +236,18 @@ trait HasSchedule
             }
         }
 
-        if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
-            $timeRanges = $this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))];
+        if ($parseDateToDay && ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay))) {
+            $dateWeekDay = strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'));
+
+            $timeRanges = $this->getSchedule()[$dateWeekDay];
+
+            if ($this->isExcludedOn($dateOrDay)) {
+                $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay);
+            }
+        }
+
+        if (!$parseDateToDay && $this->isValidYearMonthDay($dateOrDay)) {
+            $timeRanges = $this->getSchedule()[$dateOrDay];
 
             if ($this->isExcludedOn($dateOrDay)) {
                 $timeRanges = $this->getExcludedTimeRangesOn($dateOrDay);

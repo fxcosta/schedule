@@ -601,14 +601,25 @@ class ScheduleTest extends TestCase
         $this->assertFalse($this->user->isAvailableOn('just_a_random_day'));
     }
 
+    public function testSaveSpecificMalFormattedDateShouldNotPersist()
+    {
+        $this->user->setSchedule([
+            '2019-06-25x' => ['08:30-11:00']
+        ]);
+
+        $schedules = $this->user->getSchedule();
+
+        $this->assertArrayNotHasKey('2019-06-25x', $schedules);
+    }
+
     public function testSaveSpecificDateScheduleInsteadWeekDay()
     {
         $this->user->setSchedule([
             '2019-06-25' => ['08:30-11:00']
         ]);
 
-        $this->assertTrue($this->user->isAvailableOn('2019-06-25'));
-        $this->assertTrue($this->user->isAvailableOnAt('2019-06-25', '09:00'));
-        $this->assertFalse($this->user->isAvailableOnAt('2019-06-25', '11:02'));
+        $this->assertTrue($this->user->isAvailableOn('2019-06-25', false));
+        $this->assertTrue($this->user->isAvailableOnAt('2019-06-25', '09:00', false));
+        $this->assertFalse($this->user->isAvailableOnAt('2019-06-25', '11:02', false));
     }
 }
