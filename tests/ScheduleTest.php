@@ -187,29 +187,29 @@ class ScheduleTest extends TestCase
             'wednesday' => ['08:00-09:00'],
         ]);
 
-        $this->assertTrue(! $this->user->isUnavailableOn('monday'));
-        $this->assertTrue(! $this->user->isUnavailableOn('tuesday'));
-        $this->assertTrue(! $this->user->isUnavailableOn('wednesday'));
-        $this->assertFalse(! $this->user->isUnavailableOn('thursday'));
-        $this->assertFalse(! $this->user->isUnavailableOn('friday'));
-        $this->assertFalse(! $this->user->isUnavailableOn('saturday'));
-        $this->assertFalse(! $this->user->isUnavailableOn('sunday'));
+        $this->assertTrue(!$this->user->isUnavailableOn('monday'));
+        $this->assertTrue(!$this->user->isUnavailableOn('tuesday'));
+        $this->assertTrue(!$this->user->isUnavailableOn('wednesday'));
+        $this->assertFalse(!$this->user->isUnavailableOn('thursday'));
+        $this->assertFalse(!$this->user->isUnavailableOn('friday'));
+        $this->assertFalse(!$this->user->isUnavailableOn('saturday'));
+        $this->assertFalse(!$this->user->isUnavailableOn('sunday'));
 
-        $this->assertTrue(! $this->user->isUnavailableOn('2018-05-28'));
-        $this->assertTrue(! $this->user->isUnavailableOn('2018-05-29'));
-        $this->assertTrue(! $this->user->isUnavailableOn('2018-05-30'));
-        $this->assertFalse(! $this->user->isUnavailableOn('2018-05-31'));
-        $this->assertFalse(! $this->user->isUnavailableOn('2018-06-01'));
-        $this->assertFalse(! $this->user->isUnavailableOn('2018-06-02'));
-        $this->assertFalse(! $this->user->isUnavailableOn('2018-06-03'));
+        $this->assertTrue(!$this->user->isUnavailableOn('2018-05-28'));
+        $this->assertTrue(!$this->user->isUnavailableOn('2018-05-29'));
+        $this->assertTrue(!$this->user->isUnavailableOn('2018-05-30'));
+        $this->assertFalse(!$this->user->isUnavailableOn('2018-05-31'));
+        $this->assertFalse(!$this->user->isUnavailableOn('2018-06-01'));
+        $this->assertFalse(!$this->user->isUnavailableOn('2018-06-02'));
+        $this->assertFalse(!$this->user->isUnavailableOn('2018-06-03'));
 
-        $this->assertTrue(! $this->user->isUnavailableOn(Carbon::create(2018, 5, 28, 0, 0, 0)));
-        $this->assertTrue(! $this->user->isUnavailableOn(Carbon::create(2018, 5, 29, 0, 0, 0)));
-        $this->assertTrue(! $this->user->isUnavailableOn(Carbon::create(2018, 5, 30, 0, 0, 0)));
-        $this->assertFalse(! $this->user->isUnavailableOn(Carbon::create(2018, 5, 31, 0, 0, 0)));
-        $this->assertFalse(! $this->user->isUnavailableOn(Carbon::create(2018, 6, 1, 0, 0, 0)));
-        $this->assertFalse(! $this->user->isUnavailableOn(Carbon::create(2018, 6, 2, 0, 0, 0)));
-        $this->assertFalse(! $this->user->isUnavailableOn(Carbon::create(2018, 6, 3, 0, 0, 0)));
+        $this->assertTrue(!$this->user->isUnavailableOn(Carbon::create(2018, 5, 28, 0, 0, 0)));
+        $this->assertTrue(!$this->user->isUnavailableOn(Carbon::create(2018, 5, 29, 0, 0, 0)));
+        $this->assertTrue(!$this->user->isUnavailableOn(Carbon::create(2018, 5, 30, 0, 0, 0)));
+        $this->assertFalse(!$this->user->isUnavailableOn(Carbon::create(2018, 5, 31, 0, 0, 0)));
+        $this->assertFalse(!$this->user->isUnavailableOn(Carbon::create(2018, 6, 1, 0, 0, 0)));
+        $this->assertFalse(!$this->user->isUnavailableOn(Carbon::create(2018, 6, 2, 0, 0, 0)));
+        $this->assertFalse(!$this->user->isUnavailableOn(Carbon::create(2018, 6, 3, 0, 0, 0)));
     }
 
     public function testIsAvailableOnAt()
@@ -287,63 +287,63 @@ class ScheduleTest extends TestCase
             'wednesday' => ['08:00-09:00'],
         ]);
 
-        $this->assertTrue(! $this->user->isUnavailableOnAt('monday', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('monday', '07:59'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('monday', '12:01'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('monday', '13:00'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('tuesday', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('tuesday', '07:59'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('tuesday', '12:01'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('tuesday', '13:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('tuesday', '15:59'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('tuesday', '16:00'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('tuesday', '16:01'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('tuesday', '19:59'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('tuesday', '20:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('tuesday', '21:01'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('monday', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('monday', '07:59'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('monday', '12:01'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('monday', '13:00'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('tuesday', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('tuesday', '07:59'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('tuesday', '12:01'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('tuesday', '13:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('tuesday', '15:59'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('tuesday', '16:00'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('tuesday', '16:01'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('tuesday', '19:59'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('tuesday', '20:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('tuesday', '21:01'));
 
-        $this->assertTrue(! $this->user->isUnavailableOnAt('2018-05-28', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-28', '07:59'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-28', '12:01'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-28', '13:00'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('2018-05-29', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-29', '07:59'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-29', '12:01'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-29', '13:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-29', '15:59'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('2018-05-29', '16:00'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('2018-05-29', '16:01'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('2018-05-29', '19:59'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt('2018-05-29', '20:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('2018-05-29', '21:01'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('2018-05-28', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-28', '07:59'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-28', '12:01'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-28', '13:00'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('2018-05-29', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-29', '07:59'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-29', '12:01'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-29', '13:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-29', '15:59'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('2018-05-29', '16:00'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('2018-05-29', '16:01'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('2018-05-29', '19:59'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt('2018-05-29', '20:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('2018-05-29', '21:01'));
 
-        $this->assertTrue(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '07:59'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '12:01'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '13:00'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '07:59'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '12:01'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '13:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '15:59'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '16:00'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '16:01'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '19:59'));
-        $this->assertTrue(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '20:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '21:01'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '07:59'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '12:01'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 28, 0, 0, 0), '13:00'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '07:59'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '12:01'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '13:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '15:59'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '16:00'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '16:01'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '19:59'));
+        $this->assertTrue(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '20:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt(Carbon::create(2018, 5, 29, 0, 0, 0), '21:01'));
 
-        $this->assertFalse(! $this->user->isUnavailableOnAt('thursday', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('thursday', '09:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('thursday', '10:30'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('friday', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('friday', '09:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('friday', '10:30'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('saturday', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('saturday', '09:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('saturday', '10:30'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('sunday', '08:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('sunday', '09:00'));
-        $this->assertFalse(! $this->user->isUnavailableOnAt('sunday', '10:30'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('thursday', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('thursday', '09:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('thursday', '10:30'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('friday', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('friday', '09:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('friday', '10:30'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('saturday', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('saturday', '09:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('saturday', '10:30'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('sunday', '08:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('sunday', '09:00'));
+        $this->assertFalse(!$this->user->isUnavailableOnAt('sunday', '10:30'));
     }
 
     public function testIsAvailableOnExclusion()
@@ -360,7 +360,7 @@ class ScheduleTest extends TestCase
         $this->user->setExclusions([
             '2018-05-28' => [], // monday, 2018
             '2018-05-31' => ['08:00-20:00'], // thursday, 2018
-            '06-01' => ['08:00-11:00'], // friday, 2018
+            '2018-06-01' => ['08:00-11:00'], // friday, 2018
         ]);
 
         $this->assertFalse($this->user->isAvailableOn('2018-05-28'));
@@ -387,19 +387,19 @@ class ScheduleTest extends TestCase
             'wednesday' => ['08:00-09:00'],
         ]);
 
-        $this->assertTrue(! $this->user->isUnavailableOn('monday'));
-        $this->assertFalse(! $this->user->isUnavailableOn('thursday'));
+        $this->assertTrue(!$this->user->isUnavailableOn('monday'));
+        $this->assertFalse(!$this->user->isUnavailableOn('thursday'));
 
         $this->user->setExclusions([
             '2018-05-28' => [], // monday, 2018
             '2018-05-31' => ['08:00-20:00'], // thursday, 2018
-            '06-01' => ['08:00-11:00'], // friday, 2018
+            '2018-06-01' => ['08:00-11:00'], // friday, 2018
         ]);
 
-        $this->assertFalse(! $this->user->isUnavailableOn('2018-05-28'));
-        $this->assertTrue(! $this->user->isUnavailableOn('2018-05-31'));
-        $this->assertTrue(! $this->user->isUnavailableOn('2018-06-01'));
-        $this->assertFalse(! $this->user->isUnavailableOn('2018-06-02'));
+        $this->assertFalse(!$this->user->isUnavailableOn('2018-05-28'));
+        $this->assertTrue(!$this->user->isUnavailableOn('2018-05-31'));
+        $this->assertTrue(!$this->user->isUnavailableOn('2018-06-01'));
+        $this->assertFalse(!$this->user->isUnavailableOn('2018-06-02'));
 
         $this->assertEquals($this->user->getHoursOn('2018-05-28'), 0);
         $this->assertEquals($this->user->getHoursOn('2018-05-31'), 12);
@@ -426,7 +426,7 @@ class ScheduleTest extends TestCase
         $this->user->setExclusions([
             '2018-05-28' => [], // monday, 2018
             '2018-05-31' => ['08:00-20:00'], // thursday, 2018
-            '06-01' => ['08:00-11:00'], // friday, 2018
+            '2018-06-01' => ['08:00-11:00'], // friday, 2018
         ]);
 
         $this->assertFalse($this->user->isAvailableOnAt('2018-05-28', '00:00'));
@@ -518,7 +518,7 @@ class ScheduleTest extends TestCase
         $this->user->setExclusions([
             '2018-05-28' => [], // monday, 2018
             '2018-05-31' => ['08:00-20:00'], // thursday, 2018
-            '06-01' => ['08:00-11:00'], // friday, 2018
+            '2018-06-01' => ['08:00-11:00'], // friday, 2018
         ]);
 
         $this->assertEquals($this->user->getMinutesOn('monday'), 4 * 60);
@@ -599,5 +599,16 @@ class ScheduleTest extends TestCase
         ]);
 
         $this->assertFalse($this->user->isAvailableOn('just_a_random_day'));
+    }
+
+    public function testSaveSpecificDateScheduleInsteadWeekDay()
+    {
+        $this->user->setSchedule([
+            '2019-06-25' => ['08:30-11:00']
+        ]);
+
+        $this->assertTrue($this->user->isAvailableOn('2019-06-25'));
+        $this->assertTrue($this->user->isAvailableOnAt('2019-06-25', '09:00'));
+        $this->assertFalse($this->user->isAvailableOnAt('2019-06-25', '11:02'));
     }
 }

@@ -51,7 +51,7 @@ trait HasSchedule
      */
     public function hasSchedule(): bool
     {
-        return (bool) ! is_null($this->schedule()->first());
+        return (bool)!is_null($this->schedule()->first());
     }
 
     /**
@@ -98,7 +98,7 @@ trait HasSchedule
      */
     public function setExclusions(array $exclusionsArray = [])
     {
-        if (! $this->hasSchedule()) {
+        if (!$this->hasSchedule()) {
             return false;
         }
 
@@ -127,7 +127,7 @@ trait HasSchedule
      */
     public function deleteSchedule(): bool
     {
-        return (bool) $this->schedule()->delete();
+        return (bool)$this->schedule()->delete();
     }
 
     /**
@@ -137,7 +137,7 @@ trait HasSchedule
      */
     public function deleteExclusions()
     {
-        if (! $this->hasSchedule()) {
+        if (!$this->hasSchedule()) {
             return false;
         }
 
@@ -157,7 +157,7 @@ trait HasSchedule
     public function isAvailableOn($dateOrDay): bool
     {
         if (in_array($dateOrDay, Self::$availableDays)) {
-            return (bool) (count($this->getSchedule()[$dateOrDay]) > 0);
+            return (bool)(count($this->getSchedule()[$dateOrDay]) > 0);
         }
 
         if ($dateOrDay instanceof $this->carbonInstance) {
@@ -169,7 +169,7 @@ trait HasSchedule
                 return false;
             }
 
-            return (bool) (count($this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]) > 0);
+            return (bool)(count($this->getSchedule()[strtolower($this->carbonInstance::parse($dateOrDay)->format('l'))]) > 0);
         }
 
         if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
@@ -181,7 +181,7 @@ trait HasSchedule
                 return false;
             }
 
-            return (bool) (count($this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]) > 0);
+            return (bool)(count($this->getSchedule()[strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'))]) > 0);
         }
 
         return false;
@@ -195,7 +195,7 @@ trait HasSchedule
      */
     public function isUnavailableOn($dateOrDay): bool
     {
-        return (bool) ! $this->isAvailableOn($dateOrDay);
+        return (bool)!$this->isAvailableOn($dateOrDay);
     }
 
     /**
@@ -229,7 +229,7 @@ trait HasSchedule
             }
         }
 
-        if (! $timeRanges) {
+        if (!$timeRanges) {
             return false;
         }
 
@@ -253,7 +253,7 @@ trait HasSchedule
      */
     public function isUnavailableOnAt($dateOrDay, $time): bool
     {
-        return (bool) ! $this->isAvailableOnAt($dateOrDay, $time);
+        return (bool)!$this->isAvailableOnAt($dateOrDay, $time);
     }
 
     /**
@@ -287,17 +287,17 @@ trait HasSchedule
             }
         }
 
-        if (! $timeRanges) {
+        if (!$timeRanges) {
             return 0;
         }
 
         foreach ($timeRanges as $timeRange) {
             $timeRange = new TimeRange($timeRange, $this->carbonInstance);
 
-            $totalHours += (int) $timeRange->diffInHours();
+            $totalHours += (int)$timeRange->diffInHours();
         }
 
-        return (int) $totalHours;
+        return (int)$totalHours;
     }
 
     /**
@@ -331,17 +331,17 @@ trait HasSchedule
             }
         }
 
-        if (! $timeRanges) {
+        if (!$timeRanges) {
             return 0;
         }
 
         foreach ($timeRanges as $timeRange) {
             $timeRange = new TimeRange($timeRange, $this->carbonInstance);
 
-            $totalMinutes += (int) $timeRange->diffInMinutes();
+            $totalMinutes += (int)$timeRange->diffInMinutes();
         }
 
-        return (int) $totalMinutes;
+        return (int)$totalMinutes;
     }
 
     /**
@@ -420,18 +420,18 @@ trait HasSchedule
         }
 
         foreach ($scheduleArray as $day => $timeArray) {
-            if (! in_array($day, Self::$availableDays)) {
+            if (!in_array($day, Self::$availableDays) && !$this->isValidYearMonthDay($day)) {
                 continue;
             }
 
-            if (! is_array($timeArray)) {
+            if (!is_array($timeArray)) {
                 continue;
             }
 
             foreach ($timeArray as $time) {
                 $timeRange = new TimeRange($time, $this->carbonInstance);
 
-                if (! $timeRange->isValidTimeRange()) {
+                if (!$timeRange->isValidTimeRange()) {
                     continue;
                 }
 
@@ -439,7 +439,7 @@ trait HasSchedule
             }
         }
 
-        return (array) $finalScheduleArray;
+        return (array)$finalScheduleArray;
     }
 
     /**
@@ -450,11 +450,11 @@ trait HasSchedule
         $finalExclusionsArray = [];
 
         foreach ($exclusionsArray as $day => $timeArray) {
-            if (! $this->isValidMonthDay($day) && ! $this->isValidYearMonthDay($day)) {
+            if (!$this->isValidMonthDay($day) && !$this->isValidYearMonthDay($day)) {
                 continue;
             }
 
-            if (! is_array($timeArray)) {
+            if (!is_array($timeArray)) {
                 continue;
             }
 
@@ -466,7 +466,7 @@ trait HasSchedule
             foreach ($timeArray as $time) {
                 $timeRange = new TimeRange($time, $this->carbonInstance);
 
-                if (! $timeRange->isValidTimeRange()) {
+                if (!$timeRange->isValidTimeRange()) {
                     continue;
                 }
 
@@ -474,7 +474,7 @@ trait HasSchedule
             }
         }
 
-        return (array) $finalExclusionsArray;
+        return (array)$finalExclusionsArray;
     }
 
     protected function isValidMonthDay($dateString): bool
@@ -485,7 +485,7 @@ trait HasSchedule
             return false;
         }
 
-        return (bool) ($day && $day->format('m-d') === $dateString);
+        return (bool)($day && $day->format('m-d') === $dateString);
     }
 
     protected function isValidYearMonthDay($dateString): bool
@@ -496,7 +496,7 @@ trait HasSchedule
             return false;
         }
 
-        return (bool) ($day && $day->format('Y-m-d') === $dateString);
+        return (bool)($day && $day->format('Y-m-d') === $dateString);
     }
 
     protected function getCarbonDateFromString($dateString)
