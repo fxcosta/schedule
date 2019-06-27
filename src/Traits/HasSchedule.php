@@ -113,6 +113,29 @@ trait HasSchedule
         return $this->getSchedule();
     }
 
+    public function addSchedule(array $newSchedules)
+    {
+        $schedulesArray = $this->getSchedule();
+
+        foreach ($newSchedules as $day => $newSchedule) {
+            if (!isset($schedulesArray[$day])) {
+                $schedulesArray[$day]['times'] = $newSchedule;
+                $schedulesArray[$day]['start_date'] = null;
+            } else {
+                $schedulesArray[$day]['times'] = array_push(
+                    $schedulesArray[$day]['times'],
+                    $newSchedule
+                );
+            }
+        }
+
+        $normalizedArray = $this->normalizeScheduleArray($schedulesArray);
+
+        $this->schedule()->first()->update([
+            'schedule' => $normalizedArray,
+        ]);
+    }
+
     /**
      * Update the model's schedule.
      *
@@ -264,8 +287,6 @@ trait HasSchedule
         }
 
         if ($this->isValidMonthDay($dateOrDay) || $this->isValidYearMonthDay($dateOrDay)) {
-            $dateWeekDay = strtolower($this->getCarbonDateFromString($dateOrDay)->format('l'));
-
             $timeRanges = $this->getSchedule($dateOrDay)['times'];
 
             if ($this->isExcludedOn($dateOrDay)) {
